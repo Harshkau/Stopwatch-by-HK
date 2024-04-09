@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link  class="icon"rel="icon" href="https://whatthelogo.com/storage/logos/hk-kopavogur-235082.png">
+
+<title>Stopwatch</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(36, 117, 97);
+  }
+  .main{
+      height:fit-content;
+      width:fit-content;
+      background-color: rgb(0, 0, 0);
+      border:2px solid black;
+      border-radius:40px;
+      margin: 70px auto;
+      padding:10px;
+     
+  }
+  .container {
+    text-align: center;
+    margin-top: 20vh;
+    color:white;
+  }
+  #display {
+    font-size: 3em;
+    margin-bottom: 20px;
+  }
+  button {
+    font-size: 1.2em;
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 20px ;
+    border:1px transparent solid;
+    background: rgb(226, 157, 67);
+  }
+ 
+</style>
+</head>
+<body>
+<div class="main">
+    
+<div class="container">
+  <h1>Stopwatch</h1>
+  <div id="display">00:00:00</div>
+  <button id="startButton" class="custom-button animate__animated animate__bounce">Start</button>
+  <button id="stopButton" class="custom-button animate__animated animate__bounce">Stop</button>
+  <button id="resetButton" class="custom-button animate__animated 2s animate__bounce">Reset</button>
+</div>
+</div>
+<script>
+  let timer;
+  let hours = 0;
+  let minutes = 0;
+  let seconds = 0;
+
+  function startStopwatch() {
+    timer = setInterval(updateStopwatch, 1000);
+    document.getElementById('startButton').style.display = 'none';
+    document.getElementById('stopButton').style.display = 'inline-block';
+    document.getElementById('resetButton').disabled = true;
+  }
+
+  function stopStopwatch() {
+    clearInterval(timer);
+    document.getElementById('startButton').style.display = 'inline-block';
+    document.getElementById('stopButton').style.display = 'none';
+    document.getElementById('resetButton').disabled = false;
+  }
+
+  function resetStopwatch() {
+    clearInterval(timer);
+    stopStopwatch(); // Stop the stopwatch
+    hours = 0;
+    minutes = 0;
+    seconds = 0;
+    updateDisplay();
+  }
+
+  function updateStopwatch() {
+    seconds++;
+    if (seconds == 60) {
+      seconds = 0;
+      minutes++;
+      if (minutes == 60) {
+        minutes = 0;
+        hours++;
+      }
+    }
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    let displayString = padZero(hours) + ':' + padZero(minutes) + ':' + padZero(seconds);
+    document.getElementById('display').textContent = displayString;
+  }
+
+  function padZero(num) {
+    return (num < 10 ? '0' : '') + num;
+  }
+
+  document.getElementById('startButton').addEventListener('click', startStopwatch);
+  document.getElementById('stopButton').addEventListener('click', stopStopwatch);
+  document.getElementById('resetButton').addEventListener('click', resetStopwatch);
+</script>
+
+</body>
+</html>
