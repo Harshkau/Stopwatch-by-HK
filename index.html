@@ -1,124 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-<link  class="icon"rel="icon" href="https://whatthelogo.com/storage/logos/hk-kopavogur-235082.png">
-
-<title>Stopwatch</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Stopwatch</title>
+  <style>
+    body, html {
+    height: 100%;
     margin: 0;
-    padding: 0;
-    background-color: rgb(0, 0, 0);
-  }
-  .main{
-      height:fit-content;
-      width:fit-content;
-      background-color: rgb(0, 0, 0);
-      border:2px solid black;
-      border-radius:40px;
-      margin: 150px auto;
-      padding:10px;
-     
-  }
-  .container {
-    content:"" ;
-    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(1, 2, 0);
+}
+
+.stopwatch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: yellow;
+}
+
+.stopwatch {
     text-align: center;
-    margin-top: 20vh;
-    color:white;
-    font-size: 50px;
-    width:100%;
-    font-weight: bold;
-    height:fit-content;
-    -moz-text-size-adjust: auto;
-    rotate:90deg;
-  }
-  #display {
-    font-size: 3em;
+    rotate: 90deg;
+    
+}
+
+#display {
+    font-size: 6em;
     margin-bottom: 20px;
-  }
-  button {
+    font-weight: bold;
+    color:white;
+}
+
+button {
     font-size: 1.2em;
-    margin: 10px;
     padding: 10px 20px;
-    border-radius: 20px ;
-    border:1px transparent solid;
-    background: rgb(226, 157, 67);
-  }
- 
-</style>
+    margin: 0 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    border:1px solid transparent;
+    background-color: rgb(236, 132, 14);
+    box-shadow: 3px 3px 5px black;
+    font-family:'Courier New', Courier, monospace;
+}
+
+  </style>
+    
 </head>
 <body>
-<div class="main">
+    
+        <div class="stopwatch">
+            <div id="display">00:00:00</div>
+            <button id="startStop" onclick="startStop()">Start</button>
+            <button id="reset" onclick="reset()">Reset</button>
+      
+    </div>
+    <script>
+      let timer;
+let isRunning = false;
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
 
-<div class="container">
- 
-  <div id="display">00:00:00</div>
-  <button id="startButton" class="custom-button animate__animated animate__bounce">Start</button>
-  <button id="stopButton" class="custom-button animate__animated animate__bounce">Stop</button>
-  <button id="resetButton" class="custom-button animate__animated 2s animate__bounce">Reset</button>
-
-</div>
-</div>
-<script>
-  let timer;
-  let hours = 0;
-  let minutes = 0;
-  let seconds = 0;
-
-  function startStopwatch() {
-    timer = setInterval(updateStopwatch, 1000);
-    document.getElementById('startButton').style.display = 'none';
-    document.getElementById('stopButton').style.display = 'inline-block';
-    document.getElementById('resetButton').disabled = true;
-  }
-
-  function stopStopwatch() {
-    clearInterval(timer);
-    document.getElementById('startButton').style.display = 'inline-block';
-    document.getElementById('stopButton').style.display = 'none';
-    document.getElementById('resetButton').disabled = false;
-  }
-
-  function resetStopwatch() {
-    clearInterval(timer);
-    stopStopwatch(); // Stop the stopwatch
-    hours = 0;
-    minutes = 0;
-    seconds = 0;
-    updateDisplay();
-  }
-
-  function updateStopwatch() {
-    seconds++;
-    if (seconds == 60) {
-      seconds = 0;
-      minutes++;
-      if (minutes == 60) {
-        minutes = 0;
-        hours++;
-      }
+function startStop() {
+    if (isRunning) {
+        clearInterval(timer);
+        document.getElementById('startStop').innerText = 'Start';
+    } else {
+        timer = setInterval(updateDisplay, 1000);
+        document.getElementById('startStop').innerText = 'Stop';
     }
-    updateDisplay();
-  }
+    isRunning = !isRunning;
+}
 
-  function updateDisplay() {
-    let displayString = padZero(hours) + ':' + padZero(minutes) + ':' + padZero(seconds);
-    document.getElementById('display').textContent = displayString;
-  }
+function reset() {
+    clearInterval(timer);
+    isRunning = false;
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    document.getElementById('display').innerText = '00:00:00';
+    document.getElementById('startStop').innerText = 'Start';
+}
 
-  function padZero(num) {
-    return (num < 10 ? '0' : '') + num;
-  }
+function updateDisplay() {
+    seconds++;
+    if (seconds === 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes === 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+    let displayString = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    document.getElementById('display').innerText = displayString;
+}
 
-  document.getElementById('startButton').addEventListener('click', startStopwatch);
-  document.getElementById('stopButton').addEventListener('click', stopStopwatch);
-  document.getElementById('resetButton').addEventListener('click', resetStopwatch);
-</script>
-
+    </script>
 </body>
 </html>
